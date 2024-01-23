@@ -58,8 +58,13 @@
     right: 0;
 }
 
+.form-group .radio-wrapper label{
+    margin-left: 5px;
+}
+
 .form-group .btn-wrapper{
 display: flex;
+flex-direction: column;
 gap: 20px;
 align-items: center;
 width: 100%;
@@ -73,7 +78,7 @@ justify-content: center;
     font-weight: 700;
     text-transform: uppercase;
     padding: 14px;
-    width: 30%;
+    width: 100%;
     border: none;
     cursor: pointer;
 }
@@ -86,16 +91,35 @@ justify-content: center;
     background-color: transparent;
     border: 1px solid #848484;
     box-shadow: 1px 1px 1px #848484;
+    width: 100%;
 }
 
 .form-group .checkbox-wrapper{
     color: var(--dark-grey);
     margin: 32px 0;
-    position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.form-group .checkbox-wrapper span{
-    position: absolute;
-    right: 0;
+.form-group .checkbox-wrapper label {
+    margin-left: 5px;
+}
+
+@media (min-width: 768px){
+    .form-group .btn-wrapper{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .form-group .btn-wrapper .btn{
+        width: 30%;
+    }
+
+    .form-group .checkbox-wrapper{
+        justify-content: space-between;
+        flex-direction: row;
+    }
 }
