@@ -1,6 +1,4 @@
-import { Schedule } from './schedule.interface';
-
-export interface location {
+export interface Location {
     id: number,
     title: string,
     content: string,
@@ -10,4 +8,9 @@ export interface location {
     fountain: string,
     locker_room: string,
     schedules: Schedule[],
+}
+
+interface Schedule{
+    weekdays: string,
+    hour: string,
 }
