@@ -1,44 +1,52 @@
 import { Location } from './../../types/location.interface';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { GetUnitsService } from '../../services/get-units.service';
+import { FilterUnitsService } from '../../services/filter-units.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.scss',
 })
-export class FormsComponent {
+export class FormsComponent implements OnInit {
+  @Output() submitEvent = new EventEmitter();
   results: Location[] = [];
   filteredResults: Location[] = [];
   formGroup!: FormGroup;
-  
-  constructor(private formBuilder: FormBuilder, private unitService: GetUnitsService){ }
-  
-  ngOnInit():void{
+
+  constructor(private formBuilder: FormBuilder, 
+    private unitService: GetUnitsService, 
+    private filterUnitsService: FilterUnitsService) 
+    { }
+
+  ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       hour: '',
       showClosed: true,
     })
     this.unitService.getAllUnits().subscribe(data => {
-      this.results = data.locations;
-      this.filteredResults = data.locations
+      this.results = data;
+      this.filteredResults = data;
+      this.unitService.setFilteredUnits(this.filteredResults);
     });
   }
 
-  onSubmit(): void{
-    console.log(this.formGroup.value)
-    if(!this.formGroup.value.showClosed){
-      this.filteredResults = this.results.filter(location => location.opened === true)
-    } else{
-      this.filteredResults = this.results;
-    }
+  //Função de click no botão "ENCONTRAR UNIDADES"
+  //Função que chama os métodos abrigados no Service "filter-units"
+  onSubmit(): void {
+    let {showClosed, hour} = this.formGroup.value;
+    this.filteredResults = this.filterUnitsService.filter(this.results, showClosed, hour);
+    this.unitService.setFilteredUnits(this.filteredResults);
+
+    this.submitEvent.emit();
   }
 
-  onClear(): void{
+  //Função de click no botão "LIMPAR FILTROS"
+  onClear(): void {
     this.formGroup.reset();
   }
 }
