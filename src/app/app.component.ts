@@ -8,13 +8,15 @@ import { BehaviorSubject } from 'rxjs';
 import { CardsListComponent } from './components/cards-list/cards-list.component';
 import { Location } from './types/location.interface';
 import { GetUnitsService } from './services/get-units.service';
+import { CaptionComponent } from './components/caption/caption.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
-    imports: [CommonModule, RouterOutlet, HeaderComponent, FormsComponent, ReactiveFormsModule, FormsModule, CardsListComponent]
+    imports: [CommonModule, RouterOutlet, HeaderComponent, FormsComponent,
+       ReactiveFormsModule, FormsModule, CardsListComponent, CaptionComponent]
 })
 export class AppComponent {
   title = "desafio-smartfit"
